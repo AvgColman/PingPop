@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - PingPop</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <span class="logo">PINGPOP</span>
+        <a href="settings.html" class="settings-btn">
+            <img src="icons/settings.png" alt="Settings">
+        </a>
+    </header>
+
+    <aside class="sidebar">
+        <ul>
+            <li><a href="profile.html"><img src="icons/user.png" alt="Profile"></a></li>
+            <li><a href="messages.html"><img src="icons/messages.png" alt="Messages"></a></li>
+            <li><a href="friends.html"><img src="icons/friends.png" alt="Add Friends"></a></li>
+            <li><a href="encrypt.html"><img src="icons/encryption.png" alt="Encryptions"></a></li>
+        </ul>
+    </aside>
+
+    <main class="settings-container">
+        <h2>Settings</h2>
+
+        <div class="settings-group">
+            <label for="notifications">Enable Notifications:</label>
+            <input type="checkbox" id="notifications">
+        </div>
+
+        <div class="settings-group">
+            <label for="language">Language:</label>
+            <select id="language">
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+            </select>
+        </div>
+
+        <div class="settings-group">
+            <button class="save-settings">Save Changes</button>
+        </div>
+    </main>
+</body>
+</html>
