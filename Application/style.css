@@ -1,0 +1,337 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1a1a50;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+/* Header */
+.header {
+    width: 100%;
+    background-color: white;
+    color: #1a1a50;
+    display: flex;
+    align-items: right;
+    padding: 5px 0px;
+    font-size: 24px;
+    font-weight: bold;
+    position: flex;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+form{
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+}
+
+ul {
+    display: flex;
+    flex-flow:column;
+    justify-content: left;
+    list-style-type: none;
+}
+
+input,
+button {
+    border-radius: 10px;
+    padding: 10px;
+}
+
+/* Logo */
+.logo {
+    margin-left: auto;
+
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Settings Button */
+.settings-btn img {
+    margin-left: auto;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.settings-btn img:hover {
+    opacity: 0.7;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+    position: fixed;
+    left: 0;
+    width: 80px;
+    height: calc(100vh - 60px);
+    background-color: #101040;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 20px 0;
+}
+
+.sidebar ul li a img {
+    width: 40px;
+    height: 40px;
+}
+
+/* Profile & Messages Page */
+.profile-container, .messages-container, .friends-container {
+    width: 80%;
+    margin: auto;
+    padding: 80px 20px 20px; /* Adjusted for header */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 20px; 
+
+}
+
+.profile-section {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-icon {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.change-icon {
+    display: block;
+    margin-top: 10px;
+    color: #2b6cb0;
+    text-decoration: none;
+}
+
+.profile-details label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.profile-details input {
+    width: 80%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+    border: none;
+}
+
+/* Messages & Friends Page Layout */
+.messages-container, .friends-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    width: 80%;
+    margin: auto;
+    padding: 10px 20px 20px;
+    top: 20px; 
+
+}
+
+/* Friends List */
+.friends-list {
+    width: 35%;
+    background-color: #151550;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.friend-items li {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.friend-items img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Chat Window */
+.chat-window {
+    width: 60%;
+    background: #202060;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Chat Messages */
+.chat-messages p {
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+.received {
+    background: #ccc;
+    color: black;
+    text-align: left;
+}
+
+.sent {
+    background: #2b6cb0;
+    color: white;
+    text-align: right;
+}
+
+/* Chat Input */
+.chat-input {
+    display: flex;
+    margin-top: 10px;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+}
+
+.encrypt-btn, .send-btn {
+    margin-left: 5px;
+    padding: 10px;
+    border: none;
+    background: #2b6cb0;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.encrypt-btn:hover, .send-btn:hover {
+    background: #1e4b8e;
+}
+
+/* Add Friends Section */
+.add-friends {
+    width: 50%;
+    background-color: #202060;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.add-friends .search-bar {
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    padding: 5px;
+    background: white;
+}
+
+.add-friends .search-bar input {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: red;
+    margin-left: 5px;
+}
+
+/* Encryptions Page Layout */
+.encryptions-container {
+    width: 80%;
+    margin: auto;
+    padding: 20px 20px 20px; 
+    background: white;
+    color: black;
+    border-radius: 10px;
+    text-align: left;
+    position: relative; 
+    top: 20px; 
+}
+
+
+/* Header for Encryptions */
+.encryptions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid black;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.encryption-options a {
+    margin-left: 10px;
+    color: #2b6cb0;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.encryption-options a:hover {
+    text-decoration: underline;
+}
+
+/* Encryption List */
+.encryption-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.encryption-item {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.encryption-item input[type="radio"] {
+    margin-right: 15px;
+    width: 20px;
+    height: 20px;
+}
+
+.binary-code {
+    flex-grow: 1;
+    border-bottom: 2px solid black;
+    padding-bottom: 5px;
+}
+
+
+/* Footer */
+footer {
+    margin-top: 20px;
+}
+
+footer a {
+    color: #2b6cb0;
+    text-decoration: none;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
