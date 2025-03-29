@@ -20,3 +20,7 @@ socket.on("message", (data) => {
     li.textContent = data
     document.querySelector('ul').appendChild(li)
 })
+
+function goToProfile() {
+    window.location.href = "profile.html";
+}

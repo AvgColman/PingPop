@@ -335,3 +335,45 @@ footer a {
 footer a:hover {
     text-decoration: underline;
 }
+/* This is fot main.html */
+.main-page {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-1in);
+}
+
+.main-logo {
+    font-size: 5rem;
+    margin: 20px 0;
+    font-family: 'Lobster', cursive;
+}
+
+.main-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    font-family: 'Roboto', sans-serif;
+}
+
+.main-button:hover {
+    background-color: #45a049;
+}
+
