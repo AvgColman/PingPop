@@ -182,10 +182,39 @@ button {
 }
 
 /* Chat Messages */
-.chat-messages p {
+.chat-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     padding: 10px;
-    border-radius: 5px;
-    margin: 5px 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.chat-messages li {
+    list-style: none;
+    max-width: 70%;
+    background: #2b6cb0;
+    padding: 10px 15px;
+    border-radius: 15px;
+    word-wrap: break-word;
+    align-self: flex-start;
+}
+
+
+.chat-messages .sent {
+    background: #ffffff;
+    color: rgb(0, 0, 0);
+    align-self: flex-end;
+}
+
+.activity-msg {
+    font-style: italic;
+    color: rgb(255, 255, 255);
+    background: none;
+    padding: 5px 10px;
+    border-radius: 10px;
+    align-self: flex-start;
 }
 
 .received {

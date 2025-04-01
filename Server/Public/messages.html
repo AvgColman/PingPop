@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messages</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.8.1/socket.io.min.js"></script>
+    <script defer src="app.js"></script>
 </head>
 <header class="header">
     <span class="logo">PINGPOP</span>
@@ -38,12 +40,8 @@
             </div>
             
             <div class="chat-window">
-                <div class="chat-messages">
-                    <p class="received">Hello!</p>
-                    <p class="sent">Hey, how are you?</p>
-                    <p class="received">I'm good, thanks!</p>
-                    <p class="sent">Great to hear!</p>
-                </div>
+                <p class="activity"></p>
+                <ul class="chat-messages"></ul>
                 <div class="chat-input">
                     <input type="text" placeholder="Type a message...">
                     <button class="encrypt-btn">🔐</button>
