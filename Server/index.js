@@ -2,6 +2,10 @@ import express from 'express'
 import { Server } from "socket.io"
 import path from 'path'
 import { fileURLToPath } from 'url'
+import bcrypt from 'bcrypt';
+
+// Temporary user store
+const users = {};
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -11,6 +15,8 @@ const PORT = process.env.PORT || 3500
 const app = express()
 
 app.use(express.static(path.join(__dirname, "public")))
+
+app.use(express.json());
 
 const expressServer = app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`)
@@ -46,3 +52,37 @@ io.on('connection', socket => {
     })
 })
 
+app.post('/register', async (req, res) => {
+    const { username, password } = req.body;
+    if (!username || !password) return res.status(400).json({ error: 'Missing fields' });
+  
+    if (users[username]) return res.status(409).json({ error: 'User already exists' });
+  
+    try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      users[username] = hashedPassword;
+      res.status(201).json({ message: 'User registered successfully' });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Server error' });
+    }
+  });
+  
+
+app.post('/login', async (req, res) => {
+    const { username, password } = req.body;
+    const userPassword = users[username];
+
+    if (!userPassword) return res.status(400).json({ error: 'Invalid username or password' });
+
+    try {
+        const match = await bcrypt.compare(password, userPassword);
+        if (match) {
+            res.status(200).json({ message: 'Login successful' });
+        } else {
+            res.status(401).json({ error: 'Invalid username or password' });
+        }
+    } catch (err) {
+        res.status(500).json({ error: 'Server error' });
+    }
+});

@@ -1,30 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-    <div class="register-container">
-        <h1>Create new Account</h1>
-        <p>Already Registered? <a href="login.html">Login</a></p>
-        <form action="#" method="POST">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" required>
-            
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
-            
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
-            
-            <label for="dob">Date of Birth</label>
-            <input type="date" id="dob" name="dob" required>
-            
-            <button type="submit">Sign Up</button>
-        </form>
-    </div>
+  <div class="register-container">
+    <h1>Create new Account</h1>
+    <p>Already Registered? <a href="login.html">Login</a></p>
+
+    <form id="registerForm">
+      <label for="name">Username</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required />
+
+      <label for="dob">Date of Birth</label>
+      <input type="date" id="dob" name="dob" required />
+
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+
+  <script type="module">
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const dob = document.getElementById('dob').value;
+
+      console.log("Submitting registration:", { username, email, dob });
+
+      try {
+        const res = await fetch('/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const data = await res.json();
+        console.log("Server response:", data);
+        alert(data.message || data.error);
+      } catch (err) {
+        console.error("Error during registration:", err);
+        alert("Something went wrong.");
+      }
+    });
+  </script>
 </body>
 </html>
