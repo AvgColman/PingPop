@@ -1,57 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="auth-container">
-    <h1>Login</h1>
-    <p>Sign in to continue</p>
-    <form action="#" method="POST">
-      <label for="name">Username</label>
-      <input type="text" id="name" name="name" required />
+    <div class="auth-container">
+        <h1>Login</h1>
+        <p>Sign in to continue</p>
+        <form action="#" method="POST">
+            <label for="name">Username</label>
+            <input type="text" id="name" name="name" required />
 
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" required />
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required />
 
-      <button type="submit">Login</button>
-    </form>
-    <p><a href="forgotpwd.html">Forgot Password?</a></p>
-  </div>
+            <button type="submit">Login</button>
+        </form>
+        <p><a href="forgotpwd.html">Forgot Password?</a></p>
+    </div>
 
-  <script type="module">
-    document.querySelector('form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-  
-      const username = document.getElementById('name').value;
-      const password = document.getElementById('password').value;
-  
-      console.log("Logging in with:", { username, password });
-  
-      try {
-        const res = await fetch('http://localhost:3500/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
+    <script type="module">
+        const supabase = supabase.createClient(
+            'https://dakpzknwpppvqqnzuzjo.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRha3B6a253cHBwdnFxbnp1empvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MDg3NDUsImV4cCI6MjA1OTM4NDc0NX0.C3a3yDgSZHnEgRpewHa99867hjde4nO-ZKgMhMAyTeg'
+        );
+
+        document.querySelector('form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('name').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const { user, error } = await supabase.auth.signIn({ email: username, password });
+                if (error) throw error;
+
+                alert('Login successful!');
+                window.location.href = 'profile.html';
+            } catch (err) {
+                console.error("Login error:", err.message);
+                alert("Something went wrong during login.");
+            }
         });
-  
-        const data = await res.json();
-        console.log("Response from server:", data);
-  
-        alert(data.message || data.error);
-  
-        if (data.message === 'Login successful') {
-          window.location.href = 'profile.html';
-        }
-      } catch (err) {
-        console.error("Login error:", err);
-        alert("Something went wrong during login.");
-      }
-    });
-  </script>
-  
+    </script>
 </body>
 </html>

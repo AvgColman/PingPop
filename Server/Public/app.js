@@ -1,53 +1,9 @@
-/*const socket = io('ws://localhost:3500')
-
-const activity = document.querySelector('.activity')
-const msgInput = document.querySelector('input')
-
-function sendMessage(e){
-    e.preventDefault()
-    if(msgInput.value){
-        socket.emit('message', msgInput.value)
-        msgInput.value = ""
-    }
-    msgInput.focus()
-}
-
-document.querySelector('form')
-    .addEventListener('submit', sendMessage)
-
-// Listen for messages
-
-socket.on("message", (data) => {
-    activity.textContent = ""
-    const li = document.createElement('li')
-    li.textContent = data
-    document.querySelector('ul').appendChild(li)
-})
-
-msgInput.addEventListener('keypress', () => {
-    socket.emit('activity', socket.id.substring(0, 5))
-})
-
-let activityTimer
-socket.on("activity", (name) => {
-    activity.textContent = `${name} is typing...`
-
-    //timer
-    clearTimeout(activityTimer)
-    activityTimer = setTimeout(() => {
-        activity.textContent = ""
-    }, 2000)
-})
-
-function goToProfile() {
-    window.location.href = "profile.html";
-}*/
-
-const socket = io('ws://localhost:3500');
+// Initialize Socket.io
+const socket = io('ws://localhost:5500');
 
 const activity = document.querySelector('.activity');
 const msgInput = document.querySelector('.chat-input input');
-const sendButton = document.querySelector('.send-btn');
+constButton = document.querySelector('.send-btn');
 const chatMessages = document.querySelector('.chat-messages');
 
 function sendMessage(e) {
@@ -94,7 +50,7 @@ socket.on("message", (data) => {
     }
 
     chatMessages.appendChild(li);
-    chatMessages.scrollTop = chatMessages.scrollHeight; // Auto-scroll
+    chatMessages.scrollTop = chatMessages.scrollHeight; 
 
     // clear the typing activity message after the message is sent
     setTimeout(() => {
@@ -116,7 +72,6 @@ socket.on("activity", (name) => {
     }
     activityMessage.textContent = `${name} is typing...`;
 
-    // remove after 2 seconds
     clearTimeout(activityTimer);
     activityTimer = setTimeout(() => {
         if (activityMessage) {
@@ -124,4 +79,50 @@ socket.on("activity", (name) => {
             activityMessage = null;
         }
     }, 2000);
+});
+
+// Supabase client
+const supabase = supabase.createClient(
+    'https://dakpzknwpppvqqnzuzjo.supabase.co', 
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRha3B6a253cHBwdnFxbnp1empvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MDg3NDUsImV4cCI6MjA1OTM4NDc0NX0.C3a3yDgSZHnEgRpewHa99867hjde4nO-ZKgMhMAyTeg' // Supabase anon key
+);
+
+// Registration form event listener
+document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const dob = document.getElementById('dob').value;
+
+    try {
+        const { data, error } = await supabase.auth.signUp({ email, password });
+        if (error) throw error;
+        const user = data.user;
+        await supabase.from('users').insert([{ username, email: user.email, dob }]);
+
+        alert('Registration successful!');
+        window.location.href = 'login.html'; // Redirect to login
+    } catch (err) {
+        console.error("Registration error:", err);
+        alert("Something went wrong.");
+    }
+});
+
+// Login form event listener
+document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('name').value;
+    const password = document.getElementById('password').value;
+
+    try {
+        const { user, error } = await supabase.auth.signInWithPassword({ email: username, password });
+        if (error) throw error;
+
+        alert('Login successful!');
+        window.location.href = 'profile.html'; // Redirect to profile
+    } catch (err) {
+        console.error("Login error:", err);
+        alert("Invalid login credentials.");
+    }
 });

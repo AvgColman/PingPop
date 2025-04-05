@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 <body>
     <header class="header">
@@ -14,35 +15,109 @@
         </a>
     </header>
     
+    <nav class="sidebar">
+        <ul>
+            <li><a href="profile.html"><img src="icons/user.png" alt="Profile"></a></li>
+            <li><a href="messages.html"><img src="icons/messages.png" alt="Messages"></a></li>
+            <li><a href="friends.html"><img src="icons/friends.png" alt="Find Friends"></a></li>
+            <li><a href="encrypt.html"><img src="icons/encryption.png" alt="Encryption"></a></li>
+        </ul>
+    </nav>
     
-        <nav class="sidebar">
-            <ul>
-                <li><a href="profile.html"><img src="icons/user.png" alt="Profile"></a></li>
-                <li><a href="messages.html"><img src="icons/messages.png" alt="Messages"></a></li>
-                <li><a href="friends.html"><img src="icons/friends.png" alt="Find Friends"></a></li>
-                <li><a href="encrypt.html"><img src="icons/encryption.png" alt="Encryption"></a></li>
-            </ul>
-        </nav>
-        <main>
-            <div class="profile-section">
-                <img src="icons/user.png" alt="Profile Icon" class="profile-icon">
-                <a href="#" class="change-icon">Change Profile Icon</a>
-            </div>
-            <div class="profile-details">
-                <label for="name">Username</label>
-                <input type="text" id="name" value="Enter Name Here">
-                
-                <label for="email">Email</label>
-                <input type="email" id="email" value="hello@reallygreatsite.com">
-                
-                <label for="password">Change Password</label>
-                <input type="password" id="password">
-            </div>
-        </main>
-        <footer>
-            <h2>Terms and Conditions</h2>
-            <a href="#">Click Here to visit our Terms and Conditions</a>
-        </footer>
-    </div>
+    <main>
+        <div class="profile-section">
+            <img src="icons/user.png" alt="Profile Icon" class="profile-icon" id="profileIcon">
+            <a href="#" class="change-icon" id="changeIcon">Change Profile Icon</a>
+        </div>
+
+        <div class="profile-details">
+            <label for="name">Username</label>
+            <input type="text" id="name" value="Enter Name Here">
+            
+            <label for="email">Email</label>
+            <input type="email" id="email" value="hello@reallygreatsite.com">
+            
+            <label for="password">Change Password</label>
+            <input type="password" id="password">
+            <button id="saveBtn">Save Changes</button>
+        </div>
+    </main>
+
+    <footer>
+        <h2>Terms and Conditions</h2>
+        <a href="#">Click Here to visit our Terms and Conditions</a>
+    </footer>
+
+    <script type="module">
+        const supabase = supabase.createClient(
+            'https://dakpzknwpppvqqnzuzjo.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRha3B6a253cHBwdnFxbnp1empvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MDg3NDUsImV4cCI6MjA1OTM4NDc0NX0.C3a3yDgSZHnEgRpewHa99867hjde4nO-ZKgMhMAyTeg'
+        );
+
+        async function loadProfile() {
+            const user = supabase.auth.user();
+            if (user) {
+                const { data, error } = await supabase
+                    .from('users')
+                    .select('username, email, profile_picture')
+                    .eq('id', user.id)
+                    .single();
+
+                if (error) {
+                    console.error("Error fetching user data:", error.message);
+                    alert("Error fetching user data.");
+                } else {
+                    document.getElementById('name').value = data.username || '';
+                    document.getElementById('email').value = data.email || '';
+                    if (data.profile_picture) {
+                        document.getElementById('profileIcon').src = data.profile_picture;
+                    }
+                }
+            } else {
+                alert("Please log in to view your profile.");
+                window.location.href = 'login.html';
+            }
+        }
+
+        async function saveProfileChanges() {
+            const username = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const user = supabase.auth.user();
+
+            if (user) {
+                let updates = {
+                    username,
+                    email,
+                    updated_at: new Date().toISOString(),
+                };
+
+                if (password) {
+                    const { error: passwordError } = await supabase.auth.update({ password });
+                    if (passwordError) {
+                        alert("Error updating password: " + passwordError.message);
+                        return;
+                    }
+                }
+
+                const { error } = await supabase
+                    .from('users')
+                    .upsert([{ ...updates, id: user.id }]);
+
+                if (error) {
+                    console.error("Error updating profile:", error.message);
+                    alert("Error updating profile.");
+                } else {
+                    alert("Profile updated successfully!");
+                }
+            } else {
+                alert("Please log in to update your profile.");
+                window.location.href = 'login.html';
+            }
+        }
+
+        document.getElementById('saveBtn').addEventListener('click', saveProfileChanges);
+        window.addEventListener('load', loadProfile);
+    </script>
 </body>
 </html>
