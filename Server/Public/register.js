@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const { data, error } = await supabase.auth.signUp({ email, password });
                 if (error) throw error;
                 const user = data.user;
-                await supabase.from('users').insert([{ username, email: user.email, dob }]);
+                await supabase.from('profiles').insert([{ username, email: user.email, dob }]);
 
                 alert('Registration successful!');
                 window.location.href = 'login.html'; // Redirect to login

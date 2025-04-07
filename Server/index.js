@@ -10,7 +10,7 @@ const users = {};
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const PORT = process.env.PORT || 5500
+const PORT = process.env.PORT || 5501
 
 const app = express()
 
@@ -24,7 +24,7 @@ const expressServer = app.listen(PORT, () => {
 
 const io = new Server(expressServer, {
     cors: {
-        origin: process.env.NODE_ENV === "production" ? false : ["http://localhost:5500","http://127.0.0.1:5500"]
+        origin: process.env.NODE_ENV === "production" ? false : ["http://localhost:5501","http://127.0.0.1:5501"]
     }
 })
 
