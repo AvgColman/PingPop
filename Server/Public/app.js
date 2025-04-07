@@ -3,12 +3,15 @@ const socket = io('ws://localhost:5500');
 
 const activity = document.querySelector('.activity');
 const msgInput = document.querySelector('.chat-input input');
-constButton = document.querySelector('.send-btn');
+const sendButton = document.querySelector('.send-btn');
 const chatMessages = document.querySelector('.chat-messages');
+
+let activityTimer;
+let activityMessage;
 
 function sendMessage(e) {
     e.preventDefault();
-    if (msgInput.value) {
+    if (msgInput.value.trim()) {
         // Remove the typing activity message immediately
         if (activityMessage) {
             activityMessage.remove();
@@ -23,46 +26,37 @@ function sendMessage(e) {
 }
 
 msgInput.addEventListener('keypress', () => {
-    // Remove the typing message if it's still there
-    if (activityMessage) {
-        activityMessage.remove();
-        activityMessage = null;
-    }
-
     // Emit that the user is typing
     socket.emit('activity', socket.id.substring(0, 5));
 });
 
 sendButton.addEventListener('click', sendMessage);
 msgInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && msgInput.value.trim()) {
+    if (e.key === 'Enter') {
         sendMessage(e);
     }
 });
 
 socket.on("message", (data) => {
-    activity.textContent = "";
+    if (activityMessage) {
+        activityMessage.remove();
+        activityMessage = null;
+    }
+
     const li = document.createElement('li');
     li.textContent = data;
+    li.classList.add('bubble');
 
     if (data.startsWith(socket.id.substring(0, 5))) {
         li.classList.add('sent');
+    } else {
+        li.classList.add('received');
     }
 
     chatMessages.appendChild(li);
-    chatMessages.scrollTop = chatMessages.scrollHeight; 
-
-    // clear the typing activity message after the message is sent
-    setTimeout(() => {
-        if (activityMessage) {
-            activityMessage.remove();
-            activityMessage = null;
-        }
-    });
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 });
 
-let activityTimer;
-let activityMessage;
 
 socket.on("activity", (name) => {
     if (!activityMessage) {
