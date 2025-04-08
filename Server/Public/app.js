@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize Socket.io
-    const socket = io('ws://localhost:5500');
+    const socket = io('ws://localhost:5501');
 
     const activity = document.querySelector('.activity');
     const msgInput = document.querySelector('.chat-input input');
@@ -12,6 +12,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let activityTimer;
     let activityMessage;
 
+    document.addEventListener('DOMContentLoaded', () => {
+        const msgInput = document.querySelector('.chat-input input');
+        const sendButton = document.querySelector('.send-btn');
+        const chatMessages = document.querySelector('.chat-messages');
+    
+        if (!msgInput || !sendButton || !chatMessages) return;
+    
+        const socket = io('ws://localhost:5501');
+
+    
     function sendMessage(e) {
         e.preventDefault();
         if (msgInput.value.trim()) {
@@ -77,3 +87,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000);
     });
 });
+}); 
+

@@ -28,7 +28,11 @@
         </form>
     </div>
     <script src="supabaseClient.js"></script>
-    <script src="register.js"></script>
-    <script src="app.js"></script>
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/+esm';
+        window.supabase = createClient('https://dakpzknwpppvqqnzuzjo.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRha3B6a253cHBwdnFxbnp1empvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MDg3NDUsImV4cCI6MjA1OTM4NDc0NX0.C3a3yDgSZHnEgRpewHa99867hjde4nO-ZKgMhMAyTeg');
+      </script>
+    <script type="module" src="register.js"></script>
+    <!--<script src="app.js"></script>-->
 </body>
 </html>

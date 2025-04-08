@@ -1,9 +1,13 @@
-import supabase from './supabaseClient.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Registration form event listener
     const registerForm = document.getElementById('registerForm');
-    if (registerForm) {
+
+    if(!registerForm){
+        console.error('Registration form not found!');
+        return;
+    }
+
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const username = document.getElementById('name').value;
@@ -11,18 +15,44 @@ document.addEventListener('DOMContentLoaded', () => {
             const password = document.getElementById('password').value;
             const dob = document.getElementById('dob').value;
 
+            if(!username || !email || !password || !dob){
+                alert("Please fill out all fields.")
+                return;
+            }
+
+            console.log('Submitting:', {username, email, dob});
+
             try {
-                const { data, error } = await supabase.auth.signUp({ email, password });
-                if (error) throw error;
-                const user = data.user;
-                await supabase.from('profiles').insert([{ username, email: user.email, dob }]);
+                const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+                    email,
+                    password
+                });
+
+                if (signUpError) throw signUpError;
+
+                const user = signUpData?.user;
+
+                if (!user || !user.id){
+                    throw new Error("User not returned from signUp.");
+                }
+
+
+                // Insert profile info (id, username, email, dob, created_at)
+                const { error: profileError } = await supabase.from('profiles').insert([{
+                    id: user.id,
+                    username,
+                    email,
+                    dob,
+                    created_at: new Date().toISOString()
+                }]);
+
+                if (profileError) throw profileError;
 
                 alert('Registration successful!');
-                window.location.href = 'login.html'; // Redirect to login
+                window.location.href = 'login.html';
             } catch (err) {
                 console.error("Registration error:", err);
-                alert("Something went wrong.");
+                alert(err.message || "Something went wrong. Check console for details.");
             }
         });
-    }
 });
