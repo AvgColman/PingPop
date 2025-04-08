@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Login - PingPop</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="auth-container">
-        <h1>Login</h1>
-        <p>Sign in to continue</p>
-        <form action="#" method="POST">
-            <label for="name">Username</label>
-            <input type="text" id="name" name="name" required />
+    <div class="auth-wrapper">
+        <div class="auth-container">
+            <img src="Icons/PingPop_Logo.png" alt="PingPop Logo" class="logo-img" />
+            <h1>Welcome Back</h1>
+            <p>Sign in to continue</p>
+            <form id="login-form">
+                <label for="name">Username</label>
+                <input type="text" id="name" name="name" required />
 
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required />
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required />
 
-            <button type="submit">Login</button>
-        </form>
-        <p><a href="forgotpwd.html">Forgot Password?</a></p>
+                <button type="submit">Login</button>
+            </form>
+            <p class="link"><a href="forgotpwd.html">Forgot Password?</a></p>
+        </div>
     </div>
 
     <script type="module">

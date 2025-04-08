@@ -52,6 +52,13 @@ button {
     font-weight: bold;
 }
 
+.logoimg{
+    align-items: center;
+    width: 30px;
+    height: 30px;
+
+}
+
 /* Settings Button */
 .settings-btn img {
     margin-left: auto;
@@ -405,4 +412,95 @@ footer a:hover {
 .main-button:hover {
     background-color: #45a049;
 }
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #1a1a50; 
+    padding: 20px;
+}
+
+.auth-container {
+    background: #ffffff;
+    color: #000000;
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.auth-container h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #1a1a50;
+}
+
+.auth-container p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.auth-container p a {
+    color: #4a90e2;
+    text-decoration: none;
+}
+
+.auth-container p a:hover {
+    text-decoration: underline;
+}
+
+.auth-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.auth-container label {
+    text-align: left;
+    font-size: 14px;
+    color: #333;
+}
+
+.auth-container input[type="text"],
+.auth-container input[type="email"],
+.auth-container input[type="password"],
+.auth-container input[type="date"] {
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    transition: border 0.2s;
+}
+
+.auth-container input:focus {
+    border-color: #4a90e2;
+}
+
+.auth-container button {
+    padding: 12px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.auth-container button:hover {
+    background-color: #357ab7;
+}
+
+.logo-img {
+    height: 100px;
+    margin-bottom: 20px;
+}
+
 
