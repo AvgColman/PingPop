@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize Socket.io
     const socket = io('ws://localhost:5501');
 
     const activity = document.querySelector('.activity');
@@ -7,31 +6,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendButton = document.querySelector('.send-btn');
     const chatMessages = document.querySelector('.chat-messages');
 
-    console.log(activity, msgInput, sendButton, chatMessages);
+    console.log(activity, msgInput, sendButton, chatMessages);s
 
     let activityTimer;
     let activityMessage;
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const msgInput = document.querySelector('.chat-input input');
-        const sendButton = document.querySelector('.send-btn');
-        const chatMessages = document.querySelector('.chat-messages');
-    
-        if (!msgInput || !sendButton || !chatMessages) return;
-    
-        const socket = io('ws://localhost:5501');
+    if (!msgInput || !sendButton || !chatMessages) return;
 
-    
     function sendMessage(e) {
         e.preventDefault();
         if (msgInput.value.trim()) {
-            // Remove the typing activity message immediately
             if (activityMessage) {
                 activityMessage.remove();
                 activityMessage = null;
             }
 
-            // Send the message to the server
+            // Send message to server
             socket.emit('message', msgInput.value);
             msgInput.value = "";
         }
@@ -39,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     msgInput.addEventListener('keypress', () => {
-        // Emit that the user is typing
         socket.emit('activity', socket.id.substring(0, 5));
     });
 
@@ -87,5 +76,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 2000);
     });
 });
-}); 
-
