@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendButton = document.querySelector('.send-btn');
     const chatMessages = document.querySelector('.chat-messages');
 
-    console.log(activity, msgInput, sendButton, chatMessages);s
+    console.log(activity, msgInput, sendButton, chatMessages);
 
     let activityTimer;
     let activityMessage;
