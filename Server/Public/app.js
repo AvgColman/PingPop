@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatMessages = document.querySelector('.chat-messages');
 
     console.log(activity, msgInput, sendButton, chatMessages);
-
+test
     let activityTimer;
     let activityMessage;
 
