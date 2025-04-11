@@ -1,58 +1,64 @@
-
 document.addEventListener('DOMContentLoaded', () => {
-    // Registration form event listener
-    const registerForm = document.getElementById('registerForm');
+  const registerForm = document.getElementById('registerForm');
 
-    if(!registerForm){
-        console.error('Registration form not found!');
-        return;
+  registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const username = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const dob = document.getElementById('dob').value;
+
+    if (!username || !email || !password || !dob) {
+      alert("Please fill out all fields.");
+      return;
     }
 
-        registerForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const dob = document.getElementById('dob').value;
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters.");
+      return;
+    }
 
-            if(!username || !email || !password || !dob){
-                alert("Please fill out all fields.")
-                return;
-            }
+    try {
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password
+      });
 
-            console.log('Submitting:', {username, email, dob});
+      console.log("🔐 SignUp Response:", signUpData);
+      if (signUpError) {
+        console.error("❌ SignUp Error:", signUpError);
+        alert(`Signup failed: ${signUpError.message}`);
+        return;
+      }
 
-            try {
-                const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-                    email,
-                    password
-                });
+      const user = signUpData.user;
+      if (!user?.id) {
+        alert("User created, but no user ID returned.");
+        return;
+      }
 
-                if (signUpError) throw signUpError;
+      // Insert into profiles
+      const { error: profileError } = await supabase.from('profiles').insert([{
+        user_id: user.id,
+        username,
+        email: user.email || email,
+        dob,
+        created_at: new Date().toISOString()
+      }]);
 
-                const user = signUpData?.user;
+      if (profileError) {
+        console.error("❌ Profile Insert Error:", profileError);
+        alert(`Profile insert failed: ${profileError.message}`);
+        return;
+      }
 
-                if (!user || !user.id){
-                    throw new Error("User not returned from signUp.");
-                }
+      alert("✅ Registration successful!");
+      window.location.href = 'login.html';
 
-
-                // Insert profile info (id, username, email, dob, created_at)
-                const { error: profileError } = await supabase.from('profiles').insert([{
-                    id: user.id,
-                    username,
-                    email,
-                    dob,
-                    created_at: new Date().toISOString()
-                }]);
-
-                if (profileError) throw profileError;
-
-                alert('Registration successful!');
-                window.location.href = 'login.html';
-            } catch (err) {
-                console.error("Registration error:", err);
-                alert(err.message || "Something went wrong. Check console for details.");
-            }
-        });
+    } catch (err) {
+      console.error("🔥 Unexpected error:", err);
+      alert("An unexpected error occurred. Check the console.");
+    }
+  });
 });

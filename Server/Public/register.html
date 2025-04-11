@@ -1,42 +1,50 @@
 <!DOCTYPE HTML>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Register - PingPop</title>
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
-        <div class="auth-wrapper">
-            <div class="auth-container">
-                <img src="Icons/PingPop_Logo.png" alt="PINGPOP Logo" class="logo-img" />
-                
-                <h1>Create new Account</h1>
-                <p>Already Registered? <a href="login.html">Login</a></p>
-    
-                <form id="registerForm">
-                    <label for="name">Username</label>
-                    <input type="text" id="name" name="name" required />
-    
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required />
-    
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required />
-    
-                    <label for="dob">Date of Birth</label>
-                    <input type="date" id="dob" name="dob" required />
-    
-                    <button type="submit">Sign Up</button>
-                </form>
-            </div>
-        </div>
-    <script src="supabaseClient.js"></script>
-    <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.0.0/+esm';
-        window.supabase = createClient('https://dakpzknwpppvqqnzuzjo.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRha3B6a253cHBwdnFxbnp1empvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MDg3NDUsImV4cCI6MjA1OTM4NDc0NX0.C3a3yDgSZHnEgRpewHa99867hjde4nO-ZKgMhMAyTeg');
-      </script>
-    <script type="module" src="register.js"></script>
-    <!--<script src="app.js"></script>-->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - PingPop</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="auth-wrapper">
+    <div class="auth-container">
+      <img src="Icons/PingPop_Logo.png" alt="PINGPOP Logo" class="logo-img" />
+      <h1>Create new Account</h1>
+      <p>Already Registered? <a href="login.html">Login</a></p>
+
+      <form id="registerForm">
+        <label for="name">Username</label>
+        <input type="text" id="name" name="name" required />
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" name="dob" required />
+
+        <button type="submit">Sign Up</button>
+      </form>
+    </div>
+  </div>
+
+ <!-- ✅ Load Supabase client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<!-- ✅ Initialize it properly -->
+<script>
+  const client = supabase.createClient(
+    'https://wkywenoxjvgjxaociect.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndreXdlbm94anZnanhhb2NpZWN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzOTcxMjMsImV4cCI6MjA1OTk3MzEyM30.t_4qJwwp9MClViTGjmc4WR2yfBCvRjKnoTVclHVvhtY'
+    );
+  window.supabase = client; // Attach it to window for register.js to access
+</script>
+
+<!-- ✅ Your logic file -->
+<script src="register.js"></script>
+
 </body>
 </html>

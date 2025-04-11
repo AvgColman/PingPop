@@ -12,9 +12,9 @@
             <img src="Icons/PingPop_Logo.png" alt="PingPop Logo" class="logo-img" />
             <h1>Welcome Back</h1>
             <p>Sign in to continue</p>
-            <form id="login-form">
-                <label for="name">Username</label>
-                <input type="text" id="name" name="name" required />
+            <form id="loginForm">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required />
 
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required />
@@ -25,29 +25,7 @@
         </div>
     </div>
 
-    <script type="module">
-        const supabase = supabase.createClient(
-            'https://dakpzknwpppvqqnzuzjo.supabase.co',
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRha3B6a253cHBwdnFxbnp1empvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM4MDg3NDUsImV4cCI6MjA1OTM4NDc0NX0.C3a3yDgSZHnEgRpewHa99867hjde4nO-ZKgMhMAyTeg'
-        );
+    <script type="module" src="login.js"></script>
 
-        document.querySelector('form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const username = document.getElementById('name').value;
-            const password = document.getElementById('password').value;
-
-            try {
-                const { user, error } = await supabase.auth.signIn({ email: username, password });
-                if (error) throw error;
-
-                alert('Login successful!');
-                window.location.href = 'profile.html';
-            } catch (err) {
-                console.error("Login error:", err.message);
-                alert("Something went wrong during login.");
-            }
-        });
-    </script>
 </body>
 </html>
