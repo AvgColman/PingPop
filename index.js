@@ -4,29 +4,40 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import bcrypt from 'bcrypt';
 
-// Temporary user store
-const users = {};
-
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const PORT = process.env.PORT || 5501
-
 const app = express()
 
-app.use(express.static(path.join(__dirname, "public")))
-
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'Public'))) // Fixed static path to match 'Public' folder
 
 const expressServer = app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`)
 })
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'Public', 'register.html')); // Fixed to match 'Public' folder
+});
+
+app.get('/test', (req, res) => {
+    res.send('Test route is working');
+});
+
+// Catch-all for undefined routes
+app.use((req, res) => {
+    res.status(404).send("Sorry can't find that!");
+});
+
 const io = new Server(expressServer, {
     cors: {
-        origin: process.env.NODE_ENV === "production" ? false : ["http://localhost:5501","http://127.0.0.1:5501"]
+        origin: process.env.NODE_ENV === "production" ? false : ["http://localhost:5501", "http://127.0.0.1:5501"]
     }
 })
+
+// Temporary user store
+const users = {};
 
 io.on('connection', socket => {
     console.log(`User ${socket.id} connected`)
@@ -34,16 +45,16 @@ io.on('connection', socket => {
     //send connection message to user
     socket.emit('message', "Welcome to PingPop Chat!")
     //send connection message to all users
-    socket.broadcast.emit('message', `User ${socket.id.substring(0,5)} connected`)
+    socket.broadcast.emit('message', `User ${socket.id.substring(0, 5)} connected`)
 
     socket.on('message', data => {
         console.log(data)
-        io.emit('message', `${socket.id.substring(0,5)}: ${data}`)
+        io.emit('message', `${socket.id.substring(0, 5)}: ${data}`)
     })
 
     //disconnection messages
     socket.on('disconnect', () => {
-        socket.broadcast.emit('message', `User ${socket.id.substring(0,5)} disconnected`)
+        socket.broadcast.emit('message', `User ${socket.id.substring(0, 5)} disconnected`)
     })
 
     //user is typing message
@@ -55,19 +66,18 @@ io.on('connection', socket => {
 app.post('/register', async (req, res) => {
     const { username, password } = req.body;
     if (!username || !password) return res.status(400).json({ error: 'Missing fields' });
-  
+
     if (users[username]) return res.status(409).json({ error: 'User already exists' });
-  
+
     try {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      users[username] = hashedPassword;
-      res.status(201).json({ message: 'User registered successfully' });
+        const hashedPassword = await bcrypt.hash(password, 10);
+        users[username] = hashedPassword;
+        res.status(201).json({ message: 'User registered successfully' });
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Server error' });
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
     }
-  });
-  
+});
 
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
