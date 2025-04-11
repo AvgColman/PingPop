@@ -2,13 +2,13 @@ console.log("✅ login.js is running!");
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-// ✅ Initialize Supabase
+//  Initialize Supabase
 const supabase = createClient(
   'https://wkywenoxjvgjxaociect.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndreXdlbm94anZnanhhb2NpZWN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzOTcxMjMsImV4cCI6MjA1OTk3MzEyM30.t_4qJwwp9MClViTGjmc4WR2yfBCvRjKnoTVclHVvhtY'
 );
 
-// ✅ Login form submission
+//  Login form submission
 document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -18,7 +18,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
   console.log("🔐 Starting login for:", username);
 
   try {
-    // 🔎 Step 1: Lookup email using username
+    // Step 1: Lookup email using username
     const { data, error } = await supabase
       .from('profiles')
       .select('email')
@@ -35,7 +35,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
     const email = data.email;
     console.log("📧 Using email:", email);
 
-    // 🔐 Step 2: Sign in with email + password
+    // Step 2: Sign in with email + password
     const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
       email,
       password
