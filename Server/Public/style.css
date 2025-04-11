@@ -136,13 +136,40 @@ button {
     font-weight: bold;
 }
 
-.profile-details input {
-    width: 80%;
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .profile-details input,
+  .profile-details button {
     padding: 10px;
-    margin-top: 5px;
-    border-radius: 5px;
+    border-radius: 6px;
     border: none;
-}
+    font-size: 16px;
+    background: white;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .profile-details input[readonly] {
+    background-color: #f0f0f0;
+    color: #666;
+  }
+  
+  #saveBtn {
+    background-color: #4ed247;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  #saveBtn:hover {
+    background-color: #3e8e41;
+  }
 
 /* Messages & Friends Page Layout */
 .messages-container, .friends-container {
