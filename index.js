@@ -17,6 +17,10 @@ app.use(express.json());
 
 app.use(express.static('./Public'))
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './Public', 'register.html'));
+  });
+
 
 const expressServer = app.listen(PORT, () => {
     console.log(`listening on port ${PORT}`);
