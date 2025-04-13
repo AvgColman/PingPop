@@ -37,6 +37,105 @@ ul {
     justify-content: left;
     list-style-type: none;
 }
+.profile-main {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 50px;
+    padding: 50px;
+    flex-wrap: wrap;
+}
+
+.mission-side {
+    max-width: 400px;
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
+
+.main-logo-img {
+    height: 120px;
+    margin-bottom: 10px;
+}
+
+.mission-title {
+    font-size: 28px;
+    margin: 10px 0;
+    color: #4ed247;
+}
+
+.mission-statement {
+    font-size: 18px;
+    color: #cccccc;
+    line-height: 1.6;
+}
+
+.profile-side {
+    max-width: 500px;
+    width: 100%;
+}
+.privacy-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #1a1a50;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+  }
+  
+  .terms-logo {
+    height: 100px;
+    margin-bottom: 20px;
+  }
+  
+  h1 {
+    font-size: 32px;
+    color: #4ed247;
+    margin-bottom: 10px;
+  }
+  
+  h2 {
+    font-size: 24px;
+    color: #4a90e2;
+    margin-top: 30px;
+  }
+  
+  p, .intro {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #e0e0e0;
+    text-align: left;
+    margin-top: 10px;
+  }
+  
+  a {
+    color: #4a90e2;
+    text-decoration: underline;
+  }
+  
+  a:hover {
+    color: #357ab7;
+  }
+  
+  .back-button-container {
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  
+  .back-button {
+    font-size: 16px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #4a90e2;
+  }
+  
+  .back-button:hover {
+    text-decoration: underline;
+    color: #357ab7;
+  }
+  
 
 input,
 button {

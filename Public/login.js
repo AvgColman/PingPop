@@ -2,13 +2,11 @@ console.log("✅ login.js is running!");
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-//  Initialize Supabase
 const supabase = createClient(
   'https://wkywenoxjvgjxaociect.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndreXdlbm94anZnanhhb2NpZWN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzOTcxMjMsImV4cCI6MjA1OTk3MzEyM30.t_4qJwwp9MClViTGjmc4WR2yfBCvRjKnoTVclHVvhtY'
 );
 
-//  Login form submission
 document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -18,41 +16,46 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
   console.log("🔐 Starting login for:", username);
 
   try {
-    // Step 1: Lookup email using username
-    const { data, error } = await supabase
+    // Step 1: Find email based on username
+    const { data: emailData, error: emailError } = await supabase
       .from('profiles')
       .select('email')
       .eq('username', username)
       .single();
 
-    console.log("📨 Email lookup result:", data, error);
-
-    if (error || !data?.email) {
+    if (emailError || !emailData?.email) {
       alert("❌ Username not found.");
       return;
     }
 
-    const email = data.email;
+    const email = emailData.email;
     console.log("📧 Using email:", email);
 
-    // Step 2: Sign in with email + password
+    // Step 2: Sign in
     const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
       email,
       password
     });
 
-    console.log("🚀 Login response:", loginData, loginError);
-
     if (loginError) {
-      alert("❌ Incorrect password.");
+      console.error("❌ Login error:", loginError.message);
+      alert("❌ Incorrect password or login failed.");
       return;
     }
 
-    alert("✅ Login successful!");
-    window.location.href = 'profile.html';
+    const user = loginData?.user;
+
+    if (!user) {
+      console.error("❗ No user returned after login.");
+      alert("❌ Login failed. No user found.");
+      return;
+    }
+
+    console.log("✅ User logged in:", user.email);
+    window.location.href = 'profile.html';  // Directly go to profile
 
   } catch (err) {
-    console.error("💥 Login error:", err.message);
+    console.error("💥 Unexpected login error:", err.message);
     alert("Something went wrong during login.");
   }
 });

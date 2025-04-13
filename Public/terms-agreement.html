@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Terms Agreement | PingPop</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .terms-wrapper {
+      max-width: 700px;
+      margin: 80px auto;
+      padding: 30px;
+      background: #1a1a50;
+      color: white;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .terms-wrapper h2 {
+      color: #4ed247;
+    }
+    .terms-wrapper p {
+      margin-top: 15px;
+      line-height: 1.5;
+    }
+    .terms-wrapper button {
+      margin-top: 20px;
+      background-color: #4ed247;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="terms-wrapper">
+    <h2>Accept Terms and Conditions</h2>
+    <p>
+      By clicking "I Agree", you accept our
+      <a href="terms.html" style="color:#4a90e2;">Terms and Conditions</a> and agree to abide by our user policies.
+    </p>
+    <button id="agreeBtn">I Agree</button>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabase = createClient(
+      'https://wkywenoxjvgjxaociect.supabase.co',
+      'your_public_anon_key_here'
+    );
+
+    document.getElementById('agreeBtn').addEventListener('click', async () => {
+      const { data: session } = await supabase.auth.getSession();
+      const user = session?.session?.user;
+
+      if (!user) return alert("You are not logged in.");
+
+      const { error } = await supabase
+        .from('profiles')
+        .update({ agreed_to_terms: true })
+        .eq('id', user.id);
+
+      if (error) {
+        alert("Error saving agreement. Try again.");
+      } else {
+        window.location.href = "/main.html";  // go to main app
+      }
+    });
+  </script>
+</body>
+</html>

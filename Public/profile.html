@@ -8,9 +8,6 @@
 </head>
 <body>
     <header class="header">
-        <span class="logoimg">
-            <img src="Icons/PingPop_Logo.png" alt="PINGPOP Logo" style="height: 40px;" >
-        </span>
         <span class="logo">PINGPOP</span>
         <a href="settings.html" class="settings-btn">
             <img src="icons/settings.png" alt="Settings">
@@ -21,36 +18,46 @@
         <ul>
             <li><a href="profile.html"><img src="icons/user.png" alt="Profile"></a></li>
             <li><a href="messages.html"><img src="icons/messages.png" alt="Messages"></a></li>
-            <li><a href="friends.html"><img src="icons/friends.png" alt="Find Friends"></a></li>
-            <li><a href="encrypt.html"><img src="icons/encryption.png" alt="Encryption"></a></li>
+          
         </ul>
     </nav>
     
-    <main>
-        
-        <div class="profile-section">
-            <img src="icons/user.png" alt="Profile Icon" class="profile-icon" id="profileIcon">
-            <a href="#" class="change-icon" id="changeIcon">Change Profile Icon</a>
+    <main class="profile-main">
+        <div class="mission-side">
+            <img src="Icons/PingPop_Logo.png" alt="PingPop Logo" class="main-logo-img">
+            <h1 class="mission-title">Welcome to PingPop</h1>
+            <p class="mission-statement">
+                Our mission is to deliver fast, secure, and encrypted messaging that protects your privacy and keeps you connected in real-time.
+            </p>
         </div>
-
-        <div class="profile-details">
-            <label for="name">Username</label>
-            <input type="text" id="name" placeholder="Enter your username" />
-          
-            <label for="email">Email</label>
-            <input type="email" id="email" readonly />
-          
-            <label for="password">Change Password</label>
-            <input type="password" id="password" placeholder="Enter new password" />
-          
-            <button id="saveBtn">Save Changes</button>
-          </div>
-          
+    
+        <div class="profile-side">
+            <div class="profile-section">
+                <img src="icons/user.png" alt="Profile Icon" class="profile-icon" id="profileIcon">
+                <a href="#" class="change-icon" id="changeIcon">Change Profile Icon</a>
+            </div>
+    
+            <div class="profile-details">
+                <label for="name">Username</label>
+                <input type="text" id="name" placeholder="Enter your username" />
+            
+                <label for="email">Email</label>
+                <input type="email" id="email" readonly />
+            
+                <label for="password">Change Password</label>
+                <input type="password" id="password" placeholder="Enter new password" />
+            
+                <button id="saveBtn">Save Changes</button>
+            </div>
+        </div>
     </main>
+    
+    
 
     <footer>
         <h2>Terms and Conditions</h2>
-        <a href="#">Click Here to visit our Terms and Conditions</a>
+        <a href="terms.html">Click Here to visit our Terms and Conditions</a>
+        <br>
     </footer>
 
     <script type="module" src="profile.js"></script>
