@@ -7,6 +7,15 @@ const supabase = createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndreXdlbm94anZnanhhb2NpZWN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzOTcxMjMsImV4cCI6MjA1OTk3MzEyM30.t_4qJwwp9MClViTGjmc4WR2yfBCvRjKnoTVclHVvhtY'
 );
 
+// Tracks login activity
+function logUserEvent(event, username) {
+  fetch('http://localhost:5501/log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ event, username })
+  }).catch(err => console.error('Logging failed:', err));
+}
+
 document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
 
