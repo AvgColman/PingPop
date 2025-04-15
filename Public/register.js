@@ -1,6 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
   const registerForm = document.getElementById('registerForm');
 
+function logUserEvent(event, username) {
+    fetch('http://localhost:5501/log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ event, username })
+    }).catch(err => console.error('Logging failed:', err));
+}
+
   registerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -19,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    logUserEvent('Registration Attempt', document.getElementById('email').value);
+    
     try {
       const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email,
