@@ -3,6 +3,8 @@ import { Server } from "socket.io"
 import path from 'path'
 import { fileURLToPath } from 'url'
 import bcrypt from 'bcrypt';
+import { logActivity } from './logging.js';
+import cors from 'cors';
 
 // Temporary user store
 const users = {};
@@ -15,12 +17,25 @@ const PORT = process.env.PORT || 5501
 const app = express()
 app.use(express.json());
 
+//Needed for front end and back end communication
+app.use(cors());
+
 app.use(express.static('./Public'))
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, './Public', 'register.html'));
   });
 
+// Verify login attempts and reports it
+  app.post('/log', (req, res) => {
+    const { event, username } = req.body;
+    if (event && username) {
+        logActivity(`Frontend Event: ${event} | User: ${username}`);
+        res.status(200).send('Logged');
+    } else {
+        res.status(400).send('Invalid log data');
+    }
+});
 
 const expressServer = app.listen(PORT, '0.0.0.0', () => {
     console.log(`listening on port ${PORT}`);
