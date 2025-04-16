@@ -1,13 +1,27 @@
+console.log("✅ register.js is running!");
+
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+const supabase = createClient(
+  'https://wkywenoxjvgjxaociect.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndreXdlbm94anZnanhhb2NpZWN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzOTcxMjMsImV4cCI6MjA1OTk3MzEyM30.t_4qJwwp9MClViTGjmc4WR2yfBCvRjKnoTVclHVvhtY'
+);
+
+function logUserEvent(event, username) {
+  fetch('http://localhost:5501/log', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ event, username })
+  }).catch(err => console.error('Logging failed:', err));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const registerForm = document.getElementById('registerForm');
 
-function logUserEvent(event, username) {
-    fetch('http://localhost:5501/log', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ event, username })
-    }).catch(err => console.error('Logging failed:', err));
-}
+  if (!registerForm) {
+    console.error("⚠️ registerForm not found!");
+    return;
+  }
 
   registerForm.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -18,57 +32,66 @@ function logUserEvent(event, username) {
     const dob = document.getElementById('dob').value;
 
     if (!username || !email || !password || !dob) {
-      alert("Please fill out all fields.");
+      alert("❌ Please fill out all fields.");
       return;
     }
 
     if (password.length < 6) {
-      alert("Password must be at least 6 characters.");
+      alert("🔐 Password must be at least 6 characters.");
       return;
     }
 
-    logUserEvent('Registration Attempt', document.getElementById('email').value);
-    
+    logUserEvent("Registration Attempt", email);
+
     try {
+      // Step 1: Register user
       const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email,
         password
       });
 
-      console.log("🔐 SignUp Response:", signUpData);
       if (signUpError) {
-        console.error("❌ SignUp Error:", signUpError);
-        alert(`Signup failed: ${signUpError.message}`);
+        console.error("❌ Sign-up error:", signUpError);
+        alert("Registration failed: " + signUpError.message);
         return;
       }
 
-      const user = signUpData.user;
-      if (!user?.id) {
-        alert("User created, but no user ID returned.");
+      // Step 2: Wait briefly and re-fetch user to get valid ID
+      const { data: userData, error: userError } = await supabase.auth.getUser();
+
+      if (userError || !userData?.user) {
+        console.error("❌ Failed to retrieve user after signUp:", userError);
+        alert("Could not retrieve new user session.");
         return;
       }
 
-      // Insert into profiles
-      const { error: profileError } = await supabase.from('profiles').insert([{
-        user_id: user.id,
-        username,
-        email: user.email || email,
-        dob,
-        created_at: new Date().toISOString()
-      }]);
+      const user = userData.user;
+      console.log("✅ Verified user ID from getUser():", user.id);
+
+      // Step 3: Insert profile with correct user_id
+      const { data: profileInsert, error: profileError } = await supabase
+        .from('profiles')
+        .insert([{
+          user_id: user.id,
+          username,
+          email,
+          dob,
+          created_at: new Date().toISOString()
+        }]);
 
       if (profileError) {
-        console.error("❌ Profile Insert Error:", profileError);
-        alert(`Profile insert failed: ${profileError.message}`);
+        console.error("❌ Profile insert error:", profileError);
+        alert("User registered, but profile insert failed.");
         return;
       }
 
-      alert("✅ Registration successful!");
-      window.location.href = 'login.html';
+      console.log("✅ Profile successfully inserted:", profileInsert);
+      alert("🎉 Registration successful! You can now log in.");
+      window.location.href = "login.html";
 
     } catch (err) {
-      console.error("🔥 Unexpected error:", err);
-      alert("An unexpected error occurred. Check the console.");
+      console.error("🔥 Unexpected registration error:", err);
+      alert("Something went wrong. See console for details.");
     }
   });
 });
