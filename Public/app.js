@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const socket = io('ws://localhost:5501');
+    const socket = io('wss://ping-pop.com', {
+        path: '/socket.io',
+    });
 
     const activity = document.querySelector('.activity');
     const msgInput = document.querySelector('.chat-input input');
