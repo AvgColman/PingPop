@@ -7,6 +7,7 @@ const supabase = createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndreXdlbm94anZnanhhb2NpZWN0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQzOTcxMjMsImV4cCI6MjA1OTk3MzEyM30.t_4qJwwp9MClViTGjmc4WR2yfBCvRjKnoTVclHVvhtY'
 );
 
+// Optional: log user events
 function logUserEvent(event, username) {
   fetch('http://localhost:5501/log', {
     method: 'POST',
@@ -44,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     logUserEvent("Registration Attempt", email);
 
     try {
-      // Step 1: Register user
+      // Step 1: Register user in Supabase Auth
       const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email,
         password
@@ -56,42 +57,42 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      // Step 2: Wait briefly and re-fetch user to get valid ID
+      // Step 2: Retrieve authenticated user from Supabase
       const { data: userData, error: userError } = await supabase.auth.getUser();
 
       if (userError || !userData?.user) {
-        console.error("❌ Failed to retrieve user after signUp:", userError);
-        alert("Could not retrieve new user session.");
+        console.error("❌ Failed to get user from session:", userError);
+        alert("Could not verify the user after sign-up.");
         return;
       }
 
       const user = userData.user;
       console.log("✅ Verified user ID from getUser():", user.id);
 
-      // Step 3: Insert profile with correct user_id
+      // Step 3: Upsert into profiles table (handles conflicts gracefully)
       const { data: profileInsert, error: profileError } = await supabase
         .from('profiles')
-        .insert([{
+        .upsert([{
           user_id: user.id,
           username,
           email,
           dob,
           created_at: new Date().toISOString()
-        }]);
+        }], { onConflict: ['user_id'] });
 
       if (profileError) {
-        console.error("❌ Profile insert error:", profileError);
-        alert("User registered, but profile insert failed.");
+        console.error("❌ Profile insert/upsert error:", profileError);
+        alert("User registered, but saving the profile failed.");
         return;
       }
 
-      console.log("✅ Profile successfully inserted:", profileInsert);
+      console.log("✅ Profile upserted:", profileInsert);
       alert("🎉 Registration successful! You can now log in.");
       window.location.href = "login.html";
 
     } catch (err) {
       console.error("🔥 Unexpected registration error:", err);
-      alert("Something went wrong. See console for details.");
+      alert("Something went wrong. Please try again.");
     }
   });
 });
